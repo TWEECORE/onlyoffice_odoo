@@ -1,14 +1,16 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, useState } from "@odoo/owl"
+import { Component, proxy, usePlugin } from "@odoo/owl";
 import { FormGallery } from "@onlyoffice_odoo/views/form_gallery/form_gallery"
 import { CreateDialog } from "@onlyoffice_odoo_documents/onlyoffice_create_template/onlyoffice_create_template_dialog"
 import { Dialog } from "@web/core/dialog/dialog"
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook"
 import { _t } from "@web/core/l10n/translation"
 import { rpc } from "@web/core/network/rpc"
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { useService } from "@web/core/utils/hooks"
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export class CreateModeDialog extends Component {
   setup() {
@@ -18,13 +20,13 @@ export class CreateModeDialog extends Component {
     useHotkey("escape", () => this.data.close())
 
     this.dialogTitle = _t("Create with ONLYOFFICE")
-    this.state = useState({
+    this.state = proxy({
       isChosen: false,
       selectedMode: null,
     })
     this.dialogService = useService("dialog")
-    this.notification = useService("notification")
-    this.actionService = useService("action")
+    this.notification = usePlugin(NotificationPlugin)
+    this.actionService = usePlugin(ActionManagerPlugin)
   }
 
   async _choiceDialog() {

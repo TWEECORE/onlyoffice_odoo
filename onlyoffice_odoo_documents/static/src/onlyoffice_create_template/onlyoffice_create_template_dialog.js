@@ -1,23 +1,26 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, useState, useSubEnv } from "@odoo/owl"
+import { Component, proxy, usePlugin } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog"
 
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook"
 import { _t } from "@web/core/l10n/translation"
 import { rpc } from "@web/core/network/rpc"
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { KeepLast } from "@web/core/utils/concurrency"
 import { useService, useAutofocus } from "@web/core/utils/hooks"
+import { useSubEnv } from "@web/owl2/utils";
 import { getDefaultConfig } from "@web/views/view"
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export class CreateDialog extends Component {
   setup() {
     this.orm = useService("orm")
     this.rpc = rpc
     this.viewService = useService("view")
-    this.notificationService = useService("notification")
-    this.actionService = useService("action")
+    this.notificationService = usePlugin(NotificationPlugin)
+    this.actionService = usePlugin(ActionManagerPlugin)
     this.inputRef = useAutofocus()
     this.documentService = useService("document.document")
 
@@ -25,7 +28,7 @@ export class CreateDialog extends Component {
     useHotkey("escape", () => this.data.close())
 
     this.dialogTitle = _t("Create with ONLYOFFICE")
-    this.state = useState({
+    this.state = proxy({
       isCreating: false,
       isOpen: true,
       selectedFormat: "docx",
