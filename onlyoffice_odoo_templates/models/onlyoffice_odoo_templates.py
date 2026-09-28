@@ -2,14 +2,14 @@
 # Copyright (C) 2026 Data Dance s.r.o.
 # License LGPL-3.0 or later (https://www.gnuorg/licenses/agpl.html).
 
-import base64
 import json
 import logging
 import os
 import time
 
-from odoo import _, api, fields, models, tools
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import BinaryBytes
 
 from odoo.addons.onlyoffice_odoo.controllers.controllers import onlyoffice_request
 from odoo.addons.onlyoffice_odoo.utils import config_utils, file_utils, jwt_utils, url_utils
@@ -54,17 +54,16 @@ class OnlyOfficeTemplate(models.Model):
     @api.onchange("file")
     def _onchange_file(self):
         if self.file and self.create_date:  # if file exist
-            decode_file = base64.b64decode(self.file)
-            is_pdf_form = pdf_utils.is_pdf_form(decode_file)
-            old_datas = self.attachment_id.datas
-            self.attachment_id.write({"datas": self.file})
+            is_pdf_form = pdf_utils.is_pdf_form(self.file.content)
+            old_raw = self.attachment_id.raw
+            self.attachment_id.write({"raw": self.file})
             self.file = False
 
             if not is_pdf_form:
                 self.env.cr.commit()
                 converted_result = self._convert_to_form(self.attachment_id)
                 if converted_result.get("error"):
-                    self.attachment_id.write({"datas": old_datas})
+                    self.attachment_id.write({"raw": old_raw})
                     self.env.cr.commit()
                     raise UserError(converted_result.get("message"))
                 if converted_result.get("fileUrl"):
@@ -73,12 +72,11 @@ class OnlyOfficeTemplate(models.Model):
                             url=converted_result["fileUrl"],
                             method="get",
                         )
-                        new_datas = base64.b64encode(response.content)
-                        self.attachment_id.write({"datas": new_datas})
+                        self.attachment_id.write({"raw": response.content})
                         self.env.cr.commit()
                     except Exception as e:
                         logger.error("Failed to download and update PDF form: %s", str(e))
-                        self.attachment_id.write({"datas": old_datas})
+                        self.attachment_id.write({"raw": old_raw})
                         self.env.cr.commit()
                         raise UserError(_("Failed to download converted PDF form")) from e
 
@@ -105,7 +103,7 @@ class OnlyOfficeTemplate(models.Model):
                     {
                         "name": name,
                         "template_model_id": model.id,
-                        "file": base64.encodebytes(content),
+                        "file": BinaryBytes(content),
                     }
                 )
 
@@ -123,20 +121,19 @@ class OnlyOfficeTemplate(models.Model):
                         method="get",
                     )
 
-                    file_content = response.content
-                    vals_copy["file"] = base64.b64encode(file_content)
+                    vals_copy["file"] = BinaryBytes(response.content)
                 except Exception as e:
                     raise UserError(_("Failed to download form")) from e
 
             is_pdf_form = None
             if "file" in vals_copy and vals_copy["file"]:
                 try:
-                    decode_file = base64.b64decode(vals_copy["file"])
-                    is_pdf_form = pdf_utils.is_pdf_form(decode_file)
+                    file_content = self._fields["file"].convert_to_cache(vals_copy["file"], self).content
+                    is_pdf_form = pdf_utils.is_pdf_form(file_content)
                 except Exception as e:
                     raise UserError(_("Invalid file format.")) from e
             else:
-                vals_copy["file"] = base64.encodebytes(file_utils.get_default_file_template(self.env.user.lang, "pdf"))
+                file_content = file_utils.get_default_file_template(self.env.user.lang, "pdf")
                 is_pdf_form = True
 
             model = self.env["ir.model"].search([("id", "=", vals_copy["template_model_id"])], limit=1)
@@ -144,7 +141,7 @@ class OnlyOfficeTemplate(models.Model):
             vals_copy["template_model_model"] = model.model
             vals_copy["mimetype"] = file_utils.get_mime_by_ext("pdf")
 
-            datas = vals_copy.pop("file")
+            vals_copy.pop("file")
             vals_copy.pop("hide_file_field", None)
             vals_copy.pop("datas", None)
 
@@ -163,7 +160,7 @@ class OnlyOfficeTemplate(models.Model):
                     "name": vals_copy.get("name", record.name) + ".pdf",
                     "display_name": vals_copy.get("name", record.name),
                     "mimetype": vals_copy.get("mimetype"),
-                    "datas": datas,
+                    "raw": file_content,
                     "res_model": self._name,
                     "res_id": record.id,
                 }
@@ -185,8 +182,7 @@ class OnlyOfficeTemplate(models.Model):
                             url=converted_result["fileUrl"],
                             method="get",
                         )
-                        new_datas = base64.b64encode(response.content)
-                        attachment.write({"datas": new_datas, "mimetype": vals_copy.get("mimetype")})
+                        attachment.write({"raw": response.content, "mimetype": vals_copy.get("mimetype")})
                         self.env.cr.commit()
                     except Exception as e:
                         logger.error("Failed to download and update PDF form: %s", str(e))
@@ -292,7 +288,7 @@ class OnlyOfficeTemplate(models.Model):
         except Exception:
             return []
 
-        fields = sorted(fields.items(), key=lambda field: tools.ustr(field[1].get("string", "").lower()))
+        fields = sorted(fields.items(), key=lambda field: str(field[1].get("string", "").lower()))
         records = []
         for field_name, field in fields:
             if exclude and field_name in exclude:

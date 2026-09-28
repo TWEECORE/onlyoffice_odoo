@@ -1,5 +1,4 @@
 # Copyright (C) 2026 Ascensio System SIA
-import base64
 import codecs
 import io
 import json
@@ -352,7 +351,7 @@ class OnlyofficeTemplate_Connector(http.Controller):
 
         attachment = self.get_record("ir.attachment", attachment_id, self.get_user_from_token(oo_security_token))
         if attachment:
-            content = base64.b64decode(attachment.datas)
+            content = attachment.raw.content
             headers = {
                 "Content-Type": "application/pdf",
                 "Content-Disposition": "attachment; filename=template.pdf",
@@ -429,10 +428,9 @@ class OnlyofficeTemplate_Connector(http.Controller):
                             result[field] = str(data).lower()
                         elif isinstance(data, tuple):
                             result[field] = str(data[1])
-                        elif field_type == "binary" and isinstance(data, bytes):
-                            img = re.search(r"'(.*?)'", str(data))
-                            if img:
-                                result[field] = img.group(1)
+                        elif field_type == "binary" and isinstance(data, dict):
+                            if data.get("content"):
+                                result[field] = data["content"]
                         elif data or field_type in ["integer", "float", "monetary"]:
                             if field_type in ["char", "text"]:
                                 result[field] = str(data)
@@ -496,14 +494,14 @@ class OnlyofficeTemplate_Connector(http.Controller):
         logger.info("get_user_from_token - user: %s", user.name)
         return user
 
-    @http.route("/onlyoffice/template/documents/check", auth="user", type="json")
+    @http.route("/onlyoffice/template/documents/check", auth="user", type="jsonrpc")
     def check_documents_module(self):
         """Check if the documents module is installed."""
         return bool(
             request.env["ir.module.module"].sudo().search([("name", "=", "documents"), ("state", "=", "installed")])
         )
 
-    @http.route("/onlyoffice/template/documents/folders", auth="user", type="json")
+    @http.route("/onlyoffice/template/documents/folders", auth="user", type="jsonrpc")
     def get_documents_folders(self):
         """Get folders available to the current user from the Documents module."""
         try:
@@ -528,7 +526,7 @@ class OnlyofficeTemplate_Connector(http.Controller):
         result.sort(key=lambda f: f["display_name"])
         return result
 
-    @http.route("/onlyoffice/template/documents/save", auth="user", type="json")
+    @http.route("/onlyoffice/template/documents/save", auth="user", type="jsonrpc")
     def save_to_documents(self, template_id, record_ids, folder_id):
         """Fill template and save the result to the specified Documents folder."""
         logger.info(
@@ -561,7 +559,7 @@ class OnlyofficeTemplate_Connector(http.Controller):
                 attachment = request.env["ir.attachment"].create(
                     {
                         "name": filename,
-                        "datas": base64.b64encode(response.content),
+                        "raw": response.content,
                         "mimetype": "application/pdf",
                     }
                 )
