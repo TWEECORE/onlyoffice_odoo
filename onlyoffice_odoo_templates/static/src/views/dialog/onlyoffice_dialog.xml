@@ -7,7 +7,6 @@
         title="this.dialogTitle"
         contentClass="'o-spreadsheet-templates-dialog'"
         footer="true"
-        modalRef="this.modalRef"
       >
         <div class="o-pager">
           <Pager
@@ -75,7 +74,7 @@
             t-att-disabled="this.isButtonDisabled()"
             t-on-click="this.addToDocuments"
           >
-            <i class="fa fa-folder-o me-1" />
+            <i class="oi me-1" data-icon="folder" />
             <t>Add to Documents</t>
           </button>
           <button class="btn btn-secondary" t-att-disabled="this.isButtonDisabled()" t-on-click="this.previewTemplate">

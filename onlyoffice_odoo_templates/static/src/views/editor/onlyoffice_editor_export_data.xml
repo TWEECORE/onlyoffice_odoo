@@ -13,7 +13,8 @@
       >
         <span
           t-if="this.props.isFieldExpandable(this.props.field.id)"
-          t-attf-class="o-onlyoffice-field-caret fa {{ this.state.subfields.length ? 'fa-caret-down' : 'fa-caret-right' }}"
+          class="o-onlyoffice-field-caret oi"
+          t-att-data-icon="this.state.subfields.length ? 'arrow_drop_down' : 'arrow_right'"
           role="img"
           aria-label="Show sub-fields"
           title="Show sub-fields"
@@ -21,9 +22,9 @@
         <span
           t-if="this.props.isTechnicalName"
           class="o-onlyoffice-field-title text-900"
-          t-esc="this.props.field.formattedId"
+          t-out="this.props.field.formattedId"
         />
-        <span t-else="" class="o-onlyoffice-field-title text-900" t-esc="this.props.field.formattedString" />
+        <span t-else="" class="o-onlyoffice-field-title text-900" t-out="this.props.field.formattedString" />
         <!--<span
           t-if="props.field.field_type === 'binary'"
           title="Image"
@@ -31,7 +32,14 @@
         />-->
       </div>
       <t t-foreach="this.state.subfields" t-as="field" t-key="field.id">
-        <ExportDataItem t-props="this.props" field="field" />
+        <ExportDataItem
+          field="field"
+          filterSubfields="this.props.filterSubfields"
+          isExpanded="this.props.isExpanded"
+          isFieldExpandable="this.props.isFieldExpandable"
+          isTechnicalName="this.props.isTechnicalName"
+          loadFields="this.props.loadFields"
+        />
         <t t-if="field_index === this.state.subfields.length-1">
           <hr class="o-onlyoffice-template-separator" />
         </t>
@@ -51,13 +59,13 @@
       <div class="o-onlyoffice-options-search">
         <div class="o-onlyoffice-search-field o_searchview">
           <input
-            t-custom-ref="search"
+            t-ref="this.searchRef"
             class="o-onlyoffice-search-input o_searchview_input form-control"
             id="o-export-search-filter"
             t-attf-placeholder="{{ this.state.isTechnicalName ? 'Search technical name' : 'Search field' }}"
             t-on-input="this.onSearch"
           />
-          <button t-if="this.searchRef.el and this.searchRef.el.value" t-on-click="this.onCleanSearch">
+          <button t-if="this.searchRef() and this.searchRef().value" t-on-click="this.onCleanSearch">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="currentColor">
               <path
                 fill-rule="evenodd"

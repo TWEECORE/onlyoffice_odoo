@@ -1,12 +1,15 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, proxy, onWillStart } from "@odoo/owl"
+import { Component, proxy, onWillStart, useProps } from "@odoo/owl"
 import { OnlyofficePreview } from "@onlyoffice_odoo/views/preview/onlyoffice_preview"
 import { registry } from "@web/core/registry"
 import { useService } from "@web/core/utils/hooks"
+import { standardFieldProps } from "@web/views/fields/standard_field_props"
 
 export class TemplatesTree extends Component {
+  props = useProps(standardFieldProps)
+
   setup() {
     this.orm = useService("orm")
     this.state = proxy({
@@ -62,9 +65,6 @@ export class TemplatesTree extends Component {
     this.env.services.dialog.add(
       OnlyofficePreview,
       {
-        close: () => {
-          this.env.services.dialog.close()
-        },
         title: path.split("/").pop(),
         url: url,
       },

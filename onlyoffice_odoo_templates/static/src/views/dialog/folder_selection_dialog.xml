@@ -4,7 +4,7 @@
     <div>
       <Dialog title="'Add to documents'" contentClass="'o-onlyoffice-folder-dialog'" footer="true">
         <div t-if="this.state.isLoading" class="text-center p-4">
-          <i class="fa fa-spinner fa-spin fa-2x" />
+          <i class="oi oi-spin oi-2x" data-icon="autorenew" />
         </div>
         <div t-elif="!this.state.folders.length" class="text-center p-4 text-muted">
           No available folders found.
@@ -17,7 +17,7 @@
               t-on-click="() => this.selectFolder(folder.id)"
               t-on-dblclick="this.onConfirm"
             >
-              <i class="fa fa-folder-o me-2 text-warning" />
+              <i class="oi me-2 text-warning" data-icon="folder" />
               <span t-out="folder.display_name" />
             </div>
           </t>

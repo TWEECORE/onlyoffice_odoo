@@ -1,7 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, onWillStart, proxy, usePlugin } from "@odoo/owl"
+import { Component, onWillStart, proxy, t, usePlugin, useProps } from "@odoo/owl"
 import { OnlyofficePreview } from "@onlyoffice_odoo/views/preview/onlyoffice_preview"
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog"
 import { Dialog } from "@web/core/dialog/dialog"
@@ -13,12 +13,19 @@ import { NotificationPlugin } from "@web/core/notifications/notification_plugin"
 import { Pager } from "@web/core/pager/pager"
 import { KeepLast } from "@web/core/utils/concurrency"
 import { useService } from "@web/core/utils/hooks"
-import { useChildSubEnv, useSubEnv } from "@web/owl2/utils"
+import { useSubEnv } from "@web/owl2/utils"
 import { SearchModel } from "@web/search/search_model"
 import { getDefaultConfig } from "@web/views/view"
 import { FolderSelectionDialog } from "./folder_selection_dialog"
 
 export class TemplateDialog extends Component {
+  props = useProps({
+    close: t.function(),
+    context: t.object().optional(),
+    resId: t.any(),
+    resModel: t.string(),
+  })
+
   setup() {
     this.orm = useService("orm")
     this.rpc = rpc
@@ -48,7 +55,7 @@ export class TemplateDialog extends Component {
       view: useService("view"),
     })
 
-    useChildSubEnv({ searchModel: this.model })
+    useSubEnv({ searchModel: this.model })
 
     this.dp = new KeepLast()
 
@@ -192,16 +199,13 @@ export class TemplateDialog extends Component {
   }
 
   previewTemplate() {
-    const t = this.state.templates.find((item) => item.id === this.state.selectedTemplateId)
-    const url = `/onlyoffice/file/content/${t.attachment_id[0]}`
+    const template = this.state.templates.find((item) => item.id === this.state.selectedTemplateId)
+    const url = `/onlyoffice/file/content/${template.attachment_id[0]}`
 
     this.env.services.dialog.add(
       OnlyofficePreview,
       {
-        close: () => {
-          this.env.services.dialog.close()
-        },
-        title: t.display_name + ".pdf",
+        title: template.display_name + ".pdf",
         url: url,
       },
       {

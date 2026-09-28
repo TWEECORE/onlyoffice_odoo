@@ -1,13 +1,18 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, proxy, onWillStart } from "@odoo/owl"
+import { Component, proxy, onWillStart, t, useProps } from "@odoo/owl"
 import { Dialog } from "@web/core/dialog/dialog"
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook"
 import { _t } from "@web/core/l10n/translation"
 import { rpc } from "@web/core/network/rpc"
 
 export class FolderSelectionDialog extends Component {
+  props = useProps({
+    close: t.function(),
+    onFolderSelected: t.function().optional(),
+  })
+
   setup() {
     this.rpc = rpc
     this.data = this.env.dialogData
