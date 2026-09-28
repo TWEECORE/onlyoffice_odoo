@@ -1,7 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, proxy, usePlugin } from "@odoo/owl"
+import { Component, proxy, signal, t, usePlugin, useProps } from "@odoo/owl"
 import { Dialog } from "@web/core/dialog/dialog"
 
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook"
@@ -14,13 +14,21 @@ import { useSubEnv } from "@web/owl2/utils"
 import { getDefaultConfig } from "@web/views/view"
 
 export class CreateDialog extends Component {
+  props = useProps({
+    close: t.function(),
+    context: t.object().optional(),
+    folderId: t.any().optional(),
+    model: t.object(),
+    onShare: t.function().optional(),
+  })
+
   setup() {
     this.orm = useService("orm")
     this.rpc = rpc
     this.viewService = useService("view")
     this.notificationService = usePlugin(NotificationPlugin)
     this.actionService = useService("action")
-    this.inputRef = useAutofocus()
+    this.inputRef = useAutofocus({ ref: signal.ref() })
     this.documentService = useService("document.document")
 
     this.data = this.env.dialogData
@@ -35,10 +43,6 @@ export class CreateDialog extends Component {
     })
     useSubEnv({ config: { ...getDefaultConfig() } })
     this.keepLast = new KeepLast()
-
-    if (this.inputRef.el) {
-      this.inputRef.el.focus()
-    }
   }
 
   async _createFile(configureAccess = false) {

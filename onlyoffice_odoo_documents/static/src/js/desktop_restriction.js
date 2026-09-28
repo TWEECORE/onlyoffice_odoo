@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { documentsCogMenuItemAutomations } from "@documents/views/cog_menu/documents_cog_menu_item_automations"
 import { DocumentsKanbanRecord } from "@documents/views/kanban/documents_kanban_record"
 import { patch } from "@web/core/utils/patch"
 
@@ -10,6 +11,13 @@ if (isDesktopEditor) {
     onClickPreview(ev) {
       ev.preventDefault()
       ev.stopPropagation()
+    },
+  })
+
+  // Hide "Automations" in the breadcrumb gear menu
+  patch(documentsCogMenuItemAutomations, {
+    isDisplayed() {
+      return false
     },
   })
 

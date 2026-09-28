@@ -1,7 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, proxy, usePlugin } from "@odoo/owl"
+import { Component, proxy, t, usePlugin, useProps } from "@odoo/owl"
 import { FormGallery } from "@onlyoffice_odoo/views/form_gallery/form_gallery"
 import { CreateDialog } from "@onlyoffice_odoo_documents/onlyoffice_create_template/onlyoffice_create_template_dialog"
 import { Dialog } from "@web/core/dialog/dialog"
@@ -12,6 +12,14 @@ import { NotificationPlugin } from "@web/core/notifications/notification_plugin"
 import { useService } from "@web/core/utils/hooks"
 
 export class CreateModeDialog extends Component {
+  props = useProps({
+    close: t.function(),
+    context: t.object().optional(),
+    folderId: t.any().optional(),
+    model: t.object(),
+    onShare: t.function().optional(),
+  })
+
   setup() {
     this.orm = useService("orm")
     this.rpc = rpc

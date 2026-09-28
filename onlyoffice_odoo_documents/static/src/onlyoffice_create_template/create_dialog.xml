@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2026 Ascensio System SIA -->
 <templates xml:space="preserve">
     <t t-name="onlyoffice_odoo_documents.CreateDialog" owl="1">
     <div>
@@ -18,10 +19,10 @@
                 <input
                   class="o_input"
                   id="title"
-                  t-custom-model.trim="this.state.title"
+                  t-model.proxy.trim="this.state.title"
                   type="text"
                   autocomplete="off"
-                  t-ref="autofocus"
+                  t-ref="this.inputRef"
                 />
               </div>
             </div>

@@ -138,8 +138,3 @@ body.desktop-editor-mode .dropdown-item-studio {
 body.desktop-editor-mode .o-dropdown--menu-submenu .o-dropdown-item:last-child {
   display: none !important;
 }
-
-/* Hide "Automations" in breadcrumb gear menu */
-body.desktop-editor-mode .o_popover .o-dropdown-item:has(i.fa-cog) {
-  display: none !important;
-}

@@ -1,6 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
+import { STATIC_COG_GROUP_ACTION_BASE } from "@documents/views/cog_menu/documents_cog_menu_group"
 import { onWillStart, usePlugin } from "@odoo/owl"
 import { _t } from "@web/core/l10n/translation"
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin"
@@ -26,9 +27,9 @@ export const OnlyofficeDocumentsControllerMixin = () => ({
       onlyofficeEdit: {
         callback: () => this.onlyofficeEditorUrl(singleSelection),
         description: _t("Open in ONLYOFFICE"),
-        groupNumber: 1,
+        groupNumber: STATIC_COG_GROUP_ACTION_BASE,
         isAvailable: () => this.documentService.userIsInternal && this.showOnlyofficeButton(singleSelection),
-        sequence: 52,
+        sequence: 30,
       },
     }
   },
