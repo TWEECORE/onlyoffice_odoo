@@ -2,9 +2,12 @@
 // Copyright (C) 2026 Ascensio System SIA
 
 import { AttachmentList } from "@mail/core/common/attachment_list"
+import { usePlugin } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation"
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { useService } from "@web/core/utils/hooks"
 import { patch } from "@web/core/utils/patch"
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 let formats = []
 const loadFormats = async () => {
@@ -22,8 +25,8 @@ patch(AttachmentList.prototype, {
   setup() {
     super.setup(...arguments)
     this.orm = useService("orm")
-    this.notification = useService("notification")
-    this.actionService = useService("action")
+    this.notification = usePlugin(NotificationPlugin)
+    this.actionService = usePlugin(ActionManagerPlugin)
   },
   // eslint-disable-next-line sort-keys
   onlyofficeCanOpen(attachment) {

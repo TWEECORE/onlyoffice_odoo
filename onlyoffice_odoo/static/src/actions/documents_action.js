@@ -1,19 +1,20 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, onMounted } from "@odoo/owl"
+import { Component, onMounted, usePlugin } from "@odoo/owl";
 import { cookie } from "@web/core/browser/cookie"
 import { router } from "@web/core/browser/router"
 import { rpc } from "@web/core/network/rpc"
 import { registry } from "@web/core/registry"
 import { useService } from "@web/core/utils/hooks"
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export class DocumentsAction extends Component {
   setup() {
     super.setup()
     this.rpc = rpc
     this.orm = useService("orm")
-    this.actionService = useService("action")
+    this.actionService = usePlugin(ActionManagerPlugin)
     this.router = router
 
     onMounted(async () => {

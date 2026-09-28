@@ -1,15 +1,17 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, useState, onWillStart, onWillUnmount } from "@odoo/owl"
+import { Component, onWillStart, onWillUnmount, proxy, usePlugin } from "@odoo/owl";
 import { OnlyofficePreview } from "@onlyoffice_odoo/views/preview/onlyoffice_preview"
 import { Dialog } from "@web/core/dialog/dialog"
 import { Dropdown } from "@web/core/dropdown/dropdown"
 import { DropdownItem } from "@web/core/dropdown/dropdown_item"
 import { _t } from "@web/core/l10n/translation"
 import { rpc } from "@web/core/network/rpc"
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { Pager } from "@web/core/pager/pager"
 import { useService } from "@web/core/utils/hooks"
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export class FormGallery extends Component {
   static template = "onlyoffice_odoo.FormGallery"
@@ -23,14 +25,14 @@ export class FormGallery extends Component {
 
   setup() {
     this.title = _t("Document templates")
-    this.action = useService("action")
-    this.notification = useService("notification")
+    this.action = usePlugin(ActionManagerPlugin)
+    this.notification = usePlugin(NotificationPlugin)
     this.rpc = rpc
     this.orm = useService("orm")
 
     this.searchTimeout = null
 
-    this.state = useState({
+    this.state = proxy({
       categories: [],
       error: null,
       form: null,
