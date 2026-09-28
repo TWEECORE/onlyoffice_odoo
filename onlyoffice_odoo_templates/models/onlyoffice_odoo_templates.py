@@ -349,7 +349,7 @@ class OnlyOfficeTemplate(models.Model):
         if not model_id:
             return
 
-        record = self.sudo().env["onlyoffice.odoo.templates"].browse(template_model_id)
+        record = self.sudo().env["onlyoffice.odoo.templates"].browse(int(template_model_id))
         if not record:
             return
 
