@@ -1,13 +1,12 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
+import { Component, onMounted } from "@odoo/owl"
 import { cookie } from "@web/core/browser/cookie"
 import { router } from "@web/core/browser/router"
 import { rpc } from "@web/core/network/rpc"
 import { registry } from "@web/core/registry"
 import { useService } from "@web/core/utils/hooks"
-
-const { Component, onMounted } = owl
 
 export class DocumentsAction extends Component {
   setup() {

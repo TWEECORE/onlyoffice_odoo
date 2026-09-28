@@ -1,6 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
+import { Component, useState, useSubEnv } from "@odoo/owl"
 import { Dialog } from "@web/core/dialog/dialog"
 
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook"
@@ -9,8 +10,6 @@ import { rpc } from "@web/core/network/rpc"
 import { KeepLast } from "@web/core/utils/concurrency"
 import { useService, useAutofocus } from "@web/core/utils/hooks"
 import { getDefaultConfig } from "@web/views/view"
-
-const { Component, useState, useSubEnv } = owl
 
 export class CreateDialog extends Component {
   setup() {

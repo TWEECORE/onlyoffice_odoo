@@ -1,6 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
+import { Component, useState, useSubEnv, useChildSubEnv, onWillStart } from "@odoo/owl"
 import { OnlyofficePreview } from "@onlyoffice_odoo/views/preview/onlyoffice_preview"
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog"
 import { Dialog } from "@web/core/dialog/dialog"
@@ -14,8 +15,6 @@ import { useService } from "@web/core/utils/hooks"
 import { SearchModel } from "@web/search/search_model"
 import { getDefaultConfig } from "@web/views/view"
 import { FolderSelectionDialog } from "./folder_selection_dialog"
-
-const { Component, useState, useSubEnv, useChildSubEnv, onWillStart } = owl
 
 export class TemplateDialog extends Component {
   setup() {

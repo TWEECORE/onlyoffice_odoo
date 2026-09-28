@@ -1,6 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
+import { Component, useState, onWillStart, onWillUnmount } from "@odoo/owl"
 import { OnlyofficePreview } from "@onlyoffice_odoo/views/preview/onlyoffice_preview"
 import { Dialog } from "@web/core/dialog/dialog"
 import { Dropdown } from "@web/core/dropdown/dropdown"
@@ -9,8 +10,6 @@ import { _t } from "@web/core/l10n/translation"
 import { rpc } from "@web/core/network/rpc"
 import { Pager } from "@web/core/pager/pager"
 import { useService } from "@web/core/utils/hooks"
-
-const { Component, useState, onWillStart, onWillUnmount } = owl
 
 export class FormGallery extends Component {
   static template = "onlyoffice_odoo.FormGallery"

@@ -1,6 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
+import { Component, useState } from "@odoo/owl"
 import { FormGallery } from "@onlyoffice_odoo/views/form_gallery/form_gallery"
 import { CreateDialog } from "@onlyoffice_odoo_documents/onlyoffice_create_template/onlyoffice_create_template_dialog"
 import { Dialog } from "@web/core/dialog/dialog"
@@ -8,8 +9,6 @@ import { useHotkey } from "@web/core/hotkeys/hotkey_hook"
 import { _t } from "@web/core/l10n/translation"
 import { rpc } from "@web/core/network/rpc"
 import { useService } from "@web/core/utils/hooks"
-
-const { Component, useState } = owl
 
 export class CreateModeDialog extends Component {
   setup() {
