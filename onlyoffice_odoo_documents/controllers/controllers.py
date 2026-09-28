@@ -38,7 +38,7 @@ class OnlyofficeDocuments_Connector(http.Controller):
             else:
                 file_data = file_utils.get_default_file_template(request.env.user.lang, supported_format)
 
-            if folder_id in ["MY", "COMPANY", "SHARED", "TRASH", "RECENT"]:
+            if not folder_id or folder_id in ["MY", "COMPANY", "SHARED", "TRASH", "RECENT"]:
                 folder_id_value = False
                 if folder_id == "COMPANY":
                     owner_id = request.env.ref("base.user_root").id
