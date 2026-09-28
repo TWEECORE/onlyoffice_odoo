@@ -1,18 +1,17 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, proxy, usePlugin } from "@odoo/owl";
+import { Component, proxy, usePlugin } from "@odoo/owl"
 import { Dialog } from "@web/core/dialog/dialog"
 
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook"
 import { _t } from "@web/core/l10n/translation"
 import { rpc } from "@web/core/network/rpc"
-import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin"
 import { KeepLast } from "@web/core/utils/concurrency"
 import { useService, useAutofocus } from "@web/core/utils/hooks"
-import { useSubEnv } from "@web/owl2/utils";
+import { useSubEnv } from "@web/owl2/utils"
 import { getDefaultConfig } from "@web/views/view"
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export class CreateDialog extends Component {
   setup() {
@@ -20,7 +19,7 @@ export class CreateDialog extends Component {
     this.rpc = rpc
     this.viewService = useService("view")
     this.notificationService = usePlugin(NotificationPlugin)
-    this.actionService = usePlugin(ActionManagerPlugin)
+    this.actionService = useService("action")
     this.inputRef = useAutofocus()
     this.documentService = useService("document.document")
 

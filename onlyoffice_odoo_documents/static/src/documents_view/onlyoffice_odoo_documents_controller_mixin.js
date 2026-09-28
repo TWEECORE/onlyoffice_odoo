@@ -1,17 +1,16 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { onWillStart, usePlugin } from "@odoo/owl";
+import { onWillStart, usePlugin } from "@odoo/owl"
 import { _t } from "@web/core/l10n/translation"
-import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin"
 import { useService } from "@web/core/utils/hooks"
 import { CreateModeDialog } from "./create_mode_dialog/create_mode_dialog"
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export const OnlyofficeDocumentsControllerMixin = () => ({
   setup() {
     super.setup(...arguments)
-    this.action = usePlugin(ActionManagerPlugin)
+    this.action = useService("action")
     this.dialogService = useService("dialog")
     this.notification = usePlugin(NotificationPlugin)
     onWillStart(async () => (this.formats = await this.loadFormats()))

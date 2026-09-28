@@ -1,14 +1,14 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, onWillStart, proxy, usePlugin } from "@odoo/owl";
+import { Component, onWillStart, proxy, usePlugin } from "@odoo/owl"
 import { CheckBox } from "@web/core/checkbox/checkbox"
 import { rpc } from "@web/core/network/rpc"
-import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin"
 import { unique } from "@web/core/utils/arrays"
 import { useBus, useService } from "@web/core/utils/hooks"
 import { fuzzyLookup } from "@web/core/utils/search"
-import { useRef } from "@web/owl2/utils";
+import { useRef } from "@web/owl2/utils"
 
 class ExportDataItem extends Component {
   setup() {

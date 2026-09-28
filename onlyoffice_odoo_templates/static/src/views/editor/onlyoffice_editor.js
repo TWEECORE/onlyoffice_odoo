@@ -1,12 +1,12 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, onMounted, onWillUnmount, proxy, usePlugin } from "@odoo/owl";
+import { Component, onMounted, onWillUnmount, proxy, usePlugin } from "@odoo/owl"
 import { cookie } from "@web/core/browser/cookie"
 import { router } from "@web/core/browser/router"
 import { _t } from "@web/core/l10n/translation"
 import { rpc } from "@web/core/network/rpc"
-import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin"
 import { registry } from "@web/core/registry"
 import { useBus, useService } from "@web/core/utils/hooks"
 import { ExportData } from "./onlyoffice_editor_export_data"
