@@ -13,6 +13,7 @@ from odoo import http
 from odoo.exceptions import AccessError
 from odoo.http import request
 from odoo.http.dispatcher import serialize_exception
+from odoo.tools.json import json_default
 from odoo.tools.translate import _
 
 from odoo.addons.documents.controllers.documents import ShareRoute
@@ -96,7 +97,7 @@ class OnlyofficeDocuments_Inherited_Connector(Onlyoffice_Connector):
                 session_info = request.env["ir.http"].get_frontend_session_info()
             except Exception:
                 session_info = {}
-            values["session_info"] = markupsafe.Markup(json.dumps(session_info))
+            values["session_info"] = markupsafe.Markup(json.dumps(session_info, default=json_default))
             return request.render("onlyoffice_odoo.onlyoffice_editor", values)
 
         except Exception as ex:
@@ -108,7 +109,7 @@ class OnlyofficeDocuments_Inherited_Connector(Onlyoffice_Connector):
     def render_document_editor(self, document_id, access_token=None):
         values = self.prepare_document_editor(document_id, access_token)
         values["editorConfig"] = markupsafe.Markup(json.dumps(values["editorConfig"]))
-        values["session_info"] = markupsafe.Markup(json.dumps(values["session_info"]))
+        values["session_info"] = markupsafe.Markup(json.dumps(values["session_info"], default=json_default))
         return request.render("onlyoffice_odoo.onlyoffice_editor", values)
 
     def prepare_document_editor(self, document_id, access_token):
