@@ -1,5 +1,9 @@
 # Change Log
 
+## Added
+
+- compatible with Odoo 20
+
 ## 6.4.0
 
 ## Added
