@@ -1,6 +1,5 @@
 # Copyright (C) 2026 Ascensio System SIA
 
-import base64
 import json
 import logging
 import re
@@ -16,6 +15,7 @@ from werkzeug.exceptions import Forbidden
 from odoo import _, fields, http
 from odoo.exceptions import AccessError, UserError
 from odoo.http import request
+from odoo.http.dispatcher import serialize_exception
 
 from odoo.addons.onlyoffice_odoo.utils import config_utils, file_utils, jwt_utils, url_utils
 
@@ -112,13 +112,13 @@ class Onlyoffice_Connector(http.Controller):
         data = attachment.read(["id", "checksum", "public", "name", "access_token"])[0]
         filename = data["name"]
 
-        can_read = attachment.check_access_rights("read", raise_exception=False) and file_utils.can_view(filename)
+        can_read = attachment.has_access("read") and file_utils.can_view(filename)
 
         if not can_read:
             _logger.warning("POST /onlyoffice/editor/get_config - no read access: %s", attachment_id)
             raise Exception("cant read")
 
-        can_write = attachment.check_access_rights("write", raise_exception=False) and file_utils.can_edit(filename)
+        can_write = attachment.has_access("write") and file_utils.can_edit(filename)
 
         config = self.prepare_editor_values(attachment, access_token, can_write)
         _logger.info("POST /onlyoffice/editor/get_config - success: %s", attachment_id)
@@ -158,7 +158,7 @@ class Onlyoffice_Connector(http.Controller):
 
             jwt_utils.decode_token(request.env, token)
 
-        stream = request.env["ir.binary"]._get_stream_from(attachment, "datas", None, "name", None)
+        stream = request.env["ir.binary"]._get_stream_from(attachment, "raw", None, "name", None)
 
         send_file_kwargs = {"as_attachment": True, "max_age": None}
 
@@ -236,13 +236,12 @@ class Onlyoffice_Connector(http.Controller):
                 file_url = url_utils.replace_public_url_to_internal(request.env, body.get("url"))
                 datas = onlyoffice_urlopen(file_url).read()
                 if attachment.res_model == "documents.document":
-                    datas = base64.encodebytes(datas)
                     document = request.env["documents.document"].browse(int(attachment.res_id))
 
                     document.with_user(user).write(
                         {
                             "name": attachment.name,
-                            "datas": datas,
+                            "raw": datas,
                             "mimetype": guess_type(file_url)[0],
                         }
                     )
@@ -256,7 +255,7 @@ class Onlyoffice_Connector(http.Controller):
         except Exception as ex:
             _logger.error("POST /onlyoffice/editor/callback/%s - error: %s", attachment_id, str(ex))
             response_json["error"] = 1
-            response_json["message"] = http.serialize_exception(ex)
+            response_json["message"] = serialize_exception(ex)
 
         return request.make_response(
             data=json.dumps(response_json),
