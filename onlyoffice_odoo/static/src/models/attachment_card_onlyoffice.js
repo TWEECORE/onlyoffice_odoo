@@ -28,6 +28,17 @@ patch(AttachmentList.prototype, {
     this.actionService = useService("action")
   },
   // eslint-disable-next-line sort-keys
+  getActions(attachment) {
+    const res = super.getActions(...arguments)
+    if (this.onlyofficeCanOpen(attachment)) {
+      res.push({
+        icon: "edit",
+        label: _t("Open in ONLYOFFICE"),
+        onSelect: () => this.openOnlyoffice(attachment),
+      })
+    }
+    return res
+  },
   onlyofficeCanOpen(attachment) {
     const format = formats.find((f) => f.name === attachment.extension.toLowerCase())
     return format && format.actions && (format.actions.includes("view") || format.actions.includes("edit"))
