@@ -353,7 +353,7 @@ class OnlyOfficeTemplate(models.Model):
         if not record:
             return
 
-        if record.template_model_id != model_id:
+        if record.template_model_id.id != model_id:
             record.template_model_id = model_id
         return
 
