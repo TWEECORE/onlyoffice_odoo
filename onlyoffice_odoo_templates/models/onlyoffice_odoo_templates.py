@@ -56,7 +56,7 @@ class OnlyOfficeTemplate(models.Model):
         if self.file and self.create_date:  # if file exist
             is_pdf_form = pdf_utils.is_pdf_form(self.file.content)
             old_raw = self.attachment_id.raw
-            self.attachment_id.write({"raw": self.file})
+            self.attachment_id.write({"raw": self.file.content})
             self.file = False
 
             if not is_pdf_form:
