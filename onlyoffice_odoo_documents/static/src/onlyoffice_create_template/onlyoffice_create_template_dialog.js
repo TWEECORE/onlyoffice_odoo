@@ -51,7 +51,7 @@ export class CreateDialog extends Component {
     }
     this.state.isCreating = true
     const selectedFormat = this.state.selectedFormat
-    const title = this.state.title
+    const title = this.state.title.trim()
 
     const json = await this.rpc("/onlyoffice/documents/file/create", {
       folder_id: this.props.folderId,
@@ -111,7 +111,7 @@ export class CreateDialog extends Component {
   }
 
   _buttonDisabled() {
-    return this.state.isCreating || !this._hasSelection() || !this.state.title
+    return this.state.isCreating || !this._hasSelection() || !this.state.title.trim()
   }
 }
 CreateDialog.components = { Dialog }

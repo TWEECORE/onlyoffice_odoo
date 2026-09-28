@@ -19,7 +19,7 @@
                 <input
                   class="o_input"
                   id="title"
-                  t-model.proxy.trim="this.state.title"
+                  t-model.proxy="this.state.title"
                   type="text"
                   autocomplete="off"
                   t-ref="this.inputRef"
