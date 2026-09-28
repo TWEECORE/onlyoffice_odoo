@@ -1,7 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, useState, onWillStart } from "@odoo/owl"
+import { Component, proxy, onWillStart } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog"
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook"
 import { _t } from "@web/core/l10n/translation"
@@ -13,7 +13,7 @@ export class FolderSelectionDialog extends Component {
     this.data = this.env.dialogData
     useHotkey("escape", () => this.data.close())
 
-    this.state = useState({
+    this.state = proxy({
       folders: [],
       selectedFolderId: null,
       isLoading: true,

@@ -1,19 +1,22 @@
 /** @odoo-module */
 // Copyright (C) 2026 Ascensio System SIA
 
+import { usePlugin } from "@odoo/owl";
 import { FormGallery } from "@onlyoffice_odoo/views/form_gallery/form_gallery"
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { useService } from "@web/core/utils/hooks"
 import { KanbanController } from "@web/views/kanban/kanban_controller"
 import { HelpDialog } from "./onlyoffice_dialog_help"
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export class OnlyofficeKanbanController extends KanbanController {
   static template = "onlyoffice_odoo_templates.KanbanView.Buttons"
 
   setup() {
     super.setup()
-    this.action = useService("action")
+    this.action = usePlugin(ActionManagerPlugin)
     this.orm = useService("orm")
-    this.notificationService = useService("notification")
+    this.notificationService = usePlugin(NotificationPlugin)
     this.dialog = useService("dialog")
     this.openedFormGallery = false
   }

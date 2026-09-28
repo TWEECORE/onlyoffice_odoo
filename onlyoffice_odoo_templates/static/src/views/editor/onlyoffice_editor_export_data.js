@@ -1,16 +1,18 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, useRef, useState, onWillStart } from "@odoo/owl"
+import { Component, onWillStart, proxy, usePlugin } from "@odoo/owl";
 import { CheckBox } from "@web/core/checkbox/checkbox"
 import { rpc } from "@web/core/network/rpc"
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { unique } from "@web/core/utils/arrays"
 import { useBus, useService } from "@web/core/utils/hooks"
 import { fuzzyLookup } from "@web/core/utils/search"
+import { useRef } from "@web/owl2/utils";
 
 class ExportDataItem extends Component {
   setup() {
-    this.state = useState({ subfields: [] })
+    this.state = proxy({ subfields: [] })
     onWillStart(() => {
       if (this.props.isExpanded) {
         return this.toggleItem(this.props.field, false)
@@ -54,7 +56,7 @@ ExportDataItem.props = {
 export class ExportData extends Component {
   setup() {
     this.dialog = useService("dialog")
-    this.notification = useService("notification")
+    this.notification = usePlugin(NotificationPlugin)
     this.orm = useService("orm")
     this.rpc = rpc
     this.searchRef = useRef("search")
@@ -62,7 +64,7 @@ export class ExportData extends Component {
     this.knownFields = {}
     this.expandedFields = {}
 
-    this.state = useState({
+    this.state = proxy({
       exportList: [],
       isTechnicalName: false,
       search: [],

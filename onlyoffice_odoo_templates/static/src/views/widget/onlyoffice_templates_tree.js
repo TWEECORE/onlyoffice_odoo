@@ -1,7 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, useState, onWillStart } from "@odoo/owl"
+import { Component, proxy, onWillStart } from "@odoo/owl";
 import { OnlyofficePreview } from "@onlyoffice_odoo/views/preview/onlyoffice_preview"
 import { registry } from "@web/core/registry"
 import { useService } from "@web/core/utils/hooks"
@@ -9,7 +9,7 @@ import { useService } from "@web/core/utils/hooks"
 export class TemplatesTree extends Component {
   setup() {
     this.orm = useService("orm")
-    this.state = useState({
+    this.state = proxy({
       loading: true,
       selected: [],
       structure: {},

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, useState, useSubEnv, useChildSubEnv, onWillStart } from "@odoo/owl"
+import { Component, onWillStart, proxy, usePlugin } from "@odoo/owl";
 import { OnlyofficePreview } from "@onlyoffice_odoo/views/preview/onlyoffice_preview"
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog"
 import { Dialog } from "@web/core/dialog/dialog"
@@ -9,9 +9,11 @@ import { useHotkey } from "@web/core/hotkeys/hotkey_hook"
 import { _t } from "@web/core/l10n/translation"
 import { download } from "@web/core/network/download"
 import { rpc } from "@web/core/network/rpc"
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { Pager } from "@web/core/pager/pager"
 import { KeepLast } from "@web/core/utils/concurrency"
 import { useService } from "@web/core/utils/hooks"
+import { useChildSubEnv, useSubEnv } from "@web/owl2/utils";
 import { SearchModel } from "@web/search/search_model"
 import { getDefaultConfig } from "@web/views/view"
 import { FolderSelectionDialog } from "./folder_selection_dialog"
@@ -21,7 +23,7 @@ export class TemplateDialog extends Component {
     this.orm = useService("orm")
     this.rpc = rpc
     this.viewService = useService("view")
-    this.notificationService = useService("notification")
+    this.notificationService = usePlugin(NotificationPlugin)
     this.dialog = useService("dialog")
 
     this.data = this.env.dialogData
@@ -29,7 +31,7 @@ export class TemplateDialog extends Component {
 
     this.dialogTitle = _t("Print from template")
     this.limit = 8
-    this.state = useState({
+    this.state = proxy({
       currentOffset: 0,
       documentsAvailable: false,
       isOpen: true,
