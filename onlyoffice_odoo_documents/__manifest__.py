@@ -12,10 +12,10 @@
     "support": "support@onlyoffice.com",
     "depends": ["onlyoffice_odoo", "documents"],
     "data": [
+        "security/ir.access.csv",
         "views/polyfills.xml",
         "views/onlyoffice_templates_share.xml",
         "views/documents_sharing_views.xml",
-        'security/ir.access.csv',
     ],
     "images": [
         "static/description/main_screenshot.png",

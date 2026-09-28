@@ -14,11 +14,11 @@
     "external_dependencies": {"python": ["pyjwt"]},
     "data": [
         "security/onlyoffice_templates_security.xml",
+        "security/ir.access.csv",
         "views/onlyoffice_menu_views.xml",
         "views/res_config_settings_views.xml",
         "views/ir_actions_report_views.xml",
         "data/templates_data.xml",
-        'security/ir.access.csv',
     ],
     "images": [
         "static/description/main_screenshot.png",

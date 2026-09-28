@@ -13,9 +13,9 @@
     "depends": ["base", "mail"],
     "external_dependencies": {"python": ["pyjwt"]},
     "data": [
+        "security/ir.access.csv",
         "views/templates.xml",
         "views/res_config_settings_views.xml",
-        'security/ir.access.csv',
     ],
     "images": [
         "static/description/main_screenshot.png",
