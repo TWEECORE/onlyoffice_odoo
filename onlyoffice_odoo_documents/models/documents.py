@@ -37,6 +37,7 @@ class Document(models.Model):
         access_via_link=None,
         is_access_via_link_hidden=None,
         partners=None,
+        groups=None,
         no_propagation=False,
     ):
         """Synchronize roles between documents and ONLYOFFICE modules."""
@@ -61,12 +62,19 @@ class Document(models.Model):
                     converted_role = self._convert_custom_role_to_standard(role_data) if role_data else role_data
                     partners_with_standard_roles[partner_id] = converted_role
 
+        groups_with_standard_roles = {}
+        if groups:
+            for group, (role, expiration_date) in groups.items():
+                converted_role = self._convert_custom_role_to_standard(role) if role else role
+                groups_with_standard_roles[group] = (converted_role, expiration_date)
+
         result = super().action_update_access_rights(
-            access_internal,
-            access_via_link,
-            is_access_via_link_hidden,
-            partners_with_standard_roles,
-            no_propagation,
+            access_internal=access_internal,
+            access_via_link=access_via_link,
+            is_access_via_link_hidden=is_access_via_link_hidden,
+            partners=partners_with_standard_roles,
+            groups=groups_with_standard_roles,
+            no_propagation=no_propagation,
         )
 
         self._save_onlyoffice_roles(

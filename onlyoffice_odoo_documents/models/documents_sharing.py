@@ -59,13 +59,16 @@ class DocumentsSharing(models.TransientModel):
         for access_user in self.env["onlyoffice.odoo.documents.access.user"].search([("document_id", "=", doc_id)]):
             original_user_roles[access_user.user_id] = access_user.role
 
-        standard_accesses = self.env["documents.access"].search([("document_id", "=", doc_id)])
+        standard_accesses = self.env["documents.access"].search(
+            [("document_id", "=", doc_id), ("partner_id", "!=", False)]
+        )
         for std_access in standard_accesses:
             if std_access.partner_id not in original_user_roles:
                 original_user_roles[std_access.partner_id] = std_access.role
 
         modified_custom_or_standard_access = self.share_access_ids.filtered(
-            lambda a: not a.role.startswith(self.WRITE_VALUE_PREFIX)
+            lambda a: a.partner_id
+            and not a.role.startswith(self.WRITE_VALUE_PREFIX)
             and not a.is_deleted
             and (self._is_custom_role(a.role) or a.role in ["view", "edit"])
             and original_user_roles.get(a.partner_id) != a.role
@@ -118,12 +121,14 @@ class DocumentsSharing(models.TransientModel):
         """Override to support custom roles in invite_role."""
         self.ensure_one()
 
-        if not self._is_custom_role(self.invite_role):
+        if not self._is_custom_role(self.invite_role) and not any(
+            self._is_custom_role(access.role) for access in self.share_access_ids
+        ):
             return super().action_invite_members()
 
-        if not self.invite_partner_ids:
+        if not (self.invite_partner_ids or self.invite_group_ids):
             params = {
-                "title": _("No partners"),
+                "title": _("No partners/groups"),
                 "message": "",
                 "type": "warning",
             }
@@ -135,27 +140,41 @@ class DocumentsSharing(models.TransientModel):
             }
         else:
             self.document_ids.action_update_access_rights(
-                partners={partner: (self.invite_role, None) for partner in self.invite_partner_ids},
+                partners={partner: (self.invite_role, False) for partner in self.invite_partner_ids},
+                groups={group: (self.invite_role, False) for group in self.invite_group_ids},
                 no_propagation=not self.is_folder_only,
             )
-
-            if self.invite_notify:
-                share_template = self.env.ref("documents.mail_template_document_share", raise_if_not_found=False)
-                if share_template:
-                    share_template.with_context(
-                        documents=self.document_ids, message=self.invite_notify_message or ""
-                    ).send_mail_batch(self.invite_partner_ids.ids)
-
+            new_partner_ids = self.invite_partner_ids + self.invite_group_ids.user_ids.partner_id
+            message = _("%s members added.", len(new_partner_ids)) if len(new_partner_ids) > 1 else _("Member added.")
             params = {
-                "title": _("Successfully Shared"),
-                "message": (
-                    _("%s members added.", len(self.invite_partner_ids))
-                    if len(self.invite_partner_ids) > 1
-                    else _("Member added.")
-                ),
+                "title": self.env._("Successfully shared"),
+                "message": message,
                 "type": "success",
                 "next": self.action_open(self.document_ids.ids),
             }
+            if self.invite_notify:
+                # Custom ONLYOFFICE roles rank like "view" for the base documents model.
+                role_rank = {"mixed": 0, "view": 1, "edit": 2}
+
+                def get_rank(role):
+                    role = role.removeprefix(self.WRITE_VALUE_PREFIX)
+                    return role_rank.get(self.env["documents.document"]._convert_custom_role_to_standard(role), 0)
+
+                existing_partner_role_dict = {}
+                for access in self.share_access_ids:
+                    for partner in access.all_partner_ids:
+                        existing_partner_role_dict[partner.id] = max(
+                            access.role, existing_partner_role_dict.get(partner.id, "view"), key=get_rank
+                        )
+
+                to_notify_partner_ids = new_partner_ids.filtered(
+                    lambda partner: partner.id not in existing_partner_role_dict
+                    or get_rank(self.invite_role) > get_rank(existing_partner_role_dict[partner.id])
+                )
+                notification_params = self._action_send_invitation(to_notify_partner_ids)
+                if notification_message := notification_params.pop("message", None):
+                    params["message"] += f" {notification_message}"
+                params.update(notification_params)
 
         return {"type": "ir.actions.client", "tag": "display_notification", "params": params}
 
@@ -221,9 +240,14 @@ class DocumentsSharing(models.TransientModel):
         is_single_doc = len(documents) == 1
 
         all_partners = self._filtered_relevant_access(documents).partner_id
+        all_groups = self._filtered_relevant_access(documents).group_id
         access_by_partner_by_doc = {
-            doc: {access.partner_id: access.role for access in self._filtered_relevant_access(doc)}
+            doc: {access.partner_id: access.role for access in self._filtered_relevant_access(doc) if access.partner_id}
             | ({doc.owner_id.partner_id: "edit"} if doc.owner_id else {})
+            for doc in documents
+        }
+        access_by_group_by_doc = {
+            doc: {access.group_id: access.role for access in self._filtered_relevant_access(doc) if access.group_id}
             for doc in documents
         }
 
@@ -250,10 +274,31 @@ class DocumentsSharing(models.TransientModel):
 
         if is_single_doc:
             expiration_per_partner = {
-                access.partner_id: access.expiration_date for access in self._filtered_relevant_access(documents)
+                access.partner_id: access.expiration_date
+                for access in self._filtered_relevant_access(documents)
+                if access.partner_id
+            }
+            expiration_per_group = {
+                access.group_id: access.expiration_date
+                for access in self._filtered_relevant_access(documents)
+                if access.group_id
             }
 
         access_shares = []
+        for group in all_groups:
+            role0 = access_by_group_by_doc.get(documents[0], {}).get(group)
+            is_mixed = any(role0 != access_by_group_by_doc.get(doc, {}).get(group) for doc in documents[1:])
+            expiration_date = expiration_per_group.get(group) if is_single_doc else False
+            access_shares.append(
+                Command.create(
+                    {
+                        "expiration_date": expiration_date,
+                        "original_expiration_date": expiration_date,
+                        "group_id": group.id,
+                        "role": "mixed" if is_mixed else role0,
+                    }
+                )
+            )
         if any(d.owner_id != document0.owner_id for d in documents):
             all_partners |= documents.owner_id.partner_id
 
