@@ -1,7 +1,7 @@
 /** @odoo-module **/
 // Copyright (C) 2026 Ascensio System SIA
 
-import { Component, onWillStart, onWillUnmount, proxy, usePlugin } from "@odoo/owl"
+import { Component, onWillStart, onWillUnmount, proxy, t, usePlugin, useProps } from "@odoo/owl"
 import { OnlyofficePreview } from "@onlyoffice_odoo/views/preview/onlyoffice_preview"
 import { Dialog } from "@web/core/dialog/dialog"
 import { Dropdown } from "@web/core/dropdown/dropdown"
@@ -21,6 +21,12 @@ export class FormGallery extends Component {
     DropdownItem,
     Pager,
   }
+
+  props = useProps({
+    close: t.function().optional(),
+    onDownload: t.function().optional(),
+    showType: t.boolean().optional(),
+  })
 
   setup() {
     this.title = _t("Document templates")
@@ -243,9 +249,6 @@ export class FormGallery extends Component {
     this.env.services.dialog.add(
       OnlyofficePreview,
       {
-        close: () => {
-          this.env.services.dialog.close()
-        },
         title: title + "." + ext.split(".").pop(),
         url: url,
       },
