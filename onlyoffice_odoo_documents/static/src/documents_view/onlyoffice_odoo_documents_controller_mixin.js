@@ -85,13 +85,14 @@ export const OnlyofficeDocumentsControllerMixin = () => ({
     const isDesktopEditor = navigator.userAgent.includes("AscDesktopEditor")
     const { same_tab } = JSON.parse(await this.orm.call("onlyoffice.odoo", "get_same_tab"))
     if (same_tab && !isDesktopEditor) {
-      const action = {
-        params: { document_id: doc.data.id },
-        tag: "onlyoffice_editor",
-        target: "current",
+      // like a click on the file: open it in the ONLYOFFICE app of its type
+      const extension = doc.data.display_name.split(".").pop().toLowerCase()
+      const format = this.formats.find((f) => f.name === extension)
+      return this.actionService.doAction({
+        params: { document_id: doc.data.id, document_type: format?.type, name: doc.data.display_name },
+        tag: "onlyoffice_open_in_app",
         type: "ir.actions.client",
-      }
-      return this.actionService.doAction(action)
+      })
     }
     window.open(`/onlyoffice/editor/document/${doc.data.id}`, "_blank")
   },

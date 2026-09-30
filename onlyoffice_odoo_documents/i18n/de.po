@@ -322,3 +322,28 @@ msgstr ""
 #: model:ir.model.fields.selection,name:onlyoffice_odoo_documents.selection__onlyoffice_odoo_documents_access_user__role__view
 msgid "Viewer"
 msgstr "Betrachter"
+
+#. module: onlyoffice_odoo_documents
+#: model:documents.document,name:onlyoffice_odoo_documents.documents_folder_onlyoffice
+msgid "ONLYOFFICE"
+msgstr "ONLYOFFICE"
+
+#. module: onlyoffice_odoo_documents
+#: model:documents.document,name:onlyoffice_odoo_documents.documents_folder_word
+msgid "Text"
+msgstr "Text"
+
+#. module: onlyoffice_odoo_documents
+#: model:documents.document,name:onlyoffice_odoo_documents.documents_folder_cell
+msgid "Spreadsheets"
+msgstr "Tabellen"
+
+#. module: onlyoffice_odoo_documents
+#: model:documents.document,name:onlyoffice_odoo_documents.documents_folder_slide
+msgid "Presentations"
+msgstr "Präsentationen"
+
+#. module: onlyoffice_odoo_documents
+#: model:documents.document,name:onlyoffice_odoo_documents.documents_folder_pdf
+msgid "PDF Forms"
+msgstr "PDF-Formulare"

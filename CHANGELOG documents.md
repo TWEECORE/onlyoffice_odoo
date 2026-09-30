@@ -3,6 +3,7 @@
 ## Added
 
 - compatible with Odoo 20
+- the ONLYOFFICE apps keep their files in the Documents folders ONLYOFFICE / Text, Spreadsheets, Presentations and PDF Forms, in sync both ways
 
 ## 6.3.1
 

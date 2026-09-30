@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (C) 2026 Ascensio System SIA -->
+<odoo>
+  <!-- The ONLYOFFICE apps show the files of these folders -->
+  <data noupdate="1">
+    <record id="documents_folder_onlyoffice" model="documents.document">
+      <field name="type">folder</field>
+      <field name="access_internal">edit</field>
+      <field name="name">ONLYOFFICE</field>
+    </record>
+    <record id="documents_folder_word" model="documents.document">
+      <field name="type">folder</field>
+      <field name="folder_id" ref="documents_folder_onlyoffice" />
+      <field name="name">Text</field>
+      <field name="sequence">10</field>
+    </record>
+    <record id="documents_folder_cell" model="documents.document">
+      <field name="type">folder</field>
+      <field name="folder_id" ref="documents_folder_onlyoffice" />
+      <field name="name">Spreadsheets</field>
+      <field name="sequence">20</field>
+    </record>
+    <record id="documents_folder_slide" model="documents.document">
+      <field name="type">folder</field>
+      <field name="folder_id" ref="documents_folder_onlyoffice" />
+      <field name="name">Presentations</field>
+      <field name="sequence">30</field>
+    </record>
+    <record id="documents_folder_pdf" model="documents.document">
+      <field name="type">folder</field>
+      <field name="folder_id" ref="documents_folder_onlyoffice" />
+      <field name="name">PDF Forms</field>
+      <field name="sequence">40</field>
+    </record>
+  </data>
+</odoo>

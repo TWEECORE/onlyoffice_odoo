@@ -13,6 +13,7 @@
     "depends": ["onlyoffice_odoo", "documents"],
     "data": [
         "security/ir.access.csv",
+        "data/documents_folder_data.xml",
         "views/polyfills.xml",
         "views/onlyoffice_templates_share.xml",
         "views/documents_sharing_views.xml",
@@ -23,6 +24,7 @@
         "static/description/edit_files.png",
         "static/description/create_files.png",
     ],
+    "post_init_hook": "_link_existing_files",
     "installable": True,
     "application": True,
     "assets": {
