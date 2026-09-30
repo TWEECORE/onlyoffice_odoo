@@ -106,6 +106,8 @@ msgstr "Anzeigename"
 #. module: onlyoffice_odoo
 #. odoo-javascript
 #: code:addons/onlyoffice_odoo/static/src/views/form_gallery/form_gallery.xml:0
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file__document_type__word
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file_create__document_type__word
 msgid "Document"
 msgstr "Dokument"
 
@@ -292,6 +294,8 @@ msgstr ""
 #. module: onlyoffice_odoo
 #. odoo-javascript
 #: code:addons/onlyoffice_odoo/static/src/views/form_gallery/form_gallery.xml:0
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file__document_type__slide
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file_create__document_type__slide
 msgid "Presentation"
 msgstr "Präsentation"
 
@@ -320,6 +324,8 @@ msgstr "Einstellungen"
 #. module: onlyoffice_odoo
 #. odoo-javascript
 #: code:addons/onlyoffice_odoo/static/src/views/form_gallery/form_gallery.xml:0
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file__document_type__cell
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file_create__document_type__cell
 msgid "Spreadsheet"
 msgstr "Kalkulationstabelle"
 
@@ -366,3 +372,269 @@ msgstr "Alle Vorlagen anzeigen"
 #: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.res_config_settings_view_form
 msgid "Welcome to ONLYOFFICE!"
 msgstr "Willkommen bei ONLYOFFICE!"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file_create__allowed_formats
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_create_view_form
+msgid "Allowed Formats"
+msgstr "Erlaubte Formate"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file__attachment_id
+msgid "Attachment"
+msgstr "Anhang"
+
+#. module: onlyoffice_odoo
+#. odoo-javascript
+#: code:addons/onlyoffice_odoo/static/src/views/form_gallery/form_gallery.xml:0
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_create_view_form
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.actions.act_window,help:onlyoffice_odoo.onlyoffice_file_action_pdf
+msgid ""
+"Click \"New\" to start with an empty PDF form or \"Upload\" to add an "
+"existing PDF."
+msgstr "Klicken Sie auf „Neu“, um mit einem leeren PDF-Formular zu beginnen, oder auf „Hochladen“, um ein vorhandenes PDF hinzuzufügen."
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.actions.act_window,help:onlyoffice_odoo.onlyoffice_file_action_word
+msgid ""
+"Click \"New\" to start with an empty document or \"Upload\" to add an "
+"existing one."
+msgstr "Klicken Sie auf „Neu“, um mit einem leeren Dokument zu beginnen, oder auf „Hochladen“, um ein vorhandenes hinzuzufügen."
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.actions.act_window,help:onlyoffice_odoo.onlyoffice_file_action_slide
+msgid ""
+"Click \"New\" to start with an empty presentation or \"Upload\" to add an "
+"existing one."
+msgstr "Klicken Sie auf „Neu“, um mit einer leeren Präsentation zu beginnen, oder auf „Hochladen“, um eine vorhandene hinzuzufügen."
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.actions.act_window,help:onlyoffice_odoo.onlyoffice_file_action_cell
+msgid ""
+"Click \"New\" to start with an empty spreadsheet or \"Upload\" to add an "
+"existing one."
+msgstr "Klicken Sie auf „Neu“, um mit einer leeren Tabelle zu beginnen, oder auf „Hochladen“, um eine vorhandene hinzuzufügen."
+
+#. module: onlyoffice_odoo
+#: model:ir.model,name:onlyoffice_odoo.model_onlyoffice_file_create
+msgid "Create ONLYOFFICE File"
+msgstr "ONLYOFFICE-Datei erstellen"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_create_view_form
+msgid "Create and Open"
+msgstr "Erstellen und öffnen"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.actions.act_window,help:onlyoffice_odoo.onlyoffice_file_action_pdf
+msgid "Create your first PDF form"
+msgstr "Erstellen Sie Ihr erstes PDF-Formular"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.actions.act_window,help:onlyoffice_odoo.onlyoffice_file_action_word
+msgid "Create your first document"
+msgstr "Erstellen Sie Ihr erstes Dokument"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.actions.act_window,help:onlyoffice_odoo.onlyoffice_file_action_slide
+msgid "Create your first presentation"
+msgstr "Erstellen Sie Ihre erste Präsentation"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.actions.act_window,help:onlyoffice_odoo.onlyoffice_file_action_cell
+msgid "Create your first spreadsheet"
+msgstr "Erstellen Sie Ihre erste Tabelle"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_kanban
+msgid "Delete"
+msgstr "Löschen"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file__document_type
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file_create__document_type
+msgid "Document Type"
+msgstr "Dokumenttyp"
+
+#. module: onlyoffice_odoo
+#: model:ir.actions.act_window,name:onlyoffice_odoo.onlyoffice_file_action_word
+#: model:ir.ui.menu,name:onlyoffice_odoo.menu_onlyoffice_word
+msgid "Text"
+msgstr "Text"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_form
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_kanban
+msgid "Download"
+msgstr "Herunterladen"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file__extension
+msgid "Extension"
+msgstr "Dateiendung"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file_create__file
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_create_view_form
+msgid "File"
+msgstr "Datei"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_create_view_form
+msgid "File Name"
+msgstr "Dateiname"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file__file_size
+msgid "File Size"
+msgstr "Dateigröße"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file_create__filename
+msgid "Filename"
+msgstr "Dateiname"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file__last_edit_date
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_search
+msgid "Last Edited"
+msgstr "Zuletzt bearbeitet"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file__last_edit_uid
+msgid "Last Edited By"
+msgstr "Zuletzt bearbeitet von"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file_create__mode
+msgid "Mode"
+msgstr "Modus"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_search
+msgid "My Files"
+msgstr "Meine Dateien"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file__name
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file_create__name
+msgid "Name"
+msgstr "Name"
+
+#. module: onlyoffice_odoo
+#. odoo-python
+#: code:addons/onlyoffice_odoo/models/onlyoffice_file.py:0
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file_create__mode__new
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_kanban
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_list
+msgid "New"
+msgstr "Neu"
+
+#. module: onlyoffice_odoo
+#. odoo-python
+#: code:addons/onlyoffice_odoo/models/onlyoffice_file.py:0
+msgid "New File"
+msgstr "Neue Datei"
+
+#. module: onlyoffice_odoo
+#: model:ir.model,name:onlyoffice_odoo.model_onlyoffice_file
+msgid "ONLYOFFICE File"
+msgstr "ONLYOFFICE-Datei"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_form
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_list
+msgid "Open"
+msgstr "Öffnen"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields,field_description:onlyoffice_odoo.field_onlyoffice_file__user_id
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_search
+msgid "Owner"
+msgstr "Eigentümer"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file__document_type__pdf
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file_create__document_type__pdf
+msgid "PDF Form"
+msgstr "PDF-Formular"
+
+#. module: onlyoffice_odoo
+#: model:ir.actions.act_window,name:onlyoffice_odoo.onlyoffice_file_action_pdf
+#: model:ir.ui.menu,name:onlyoffice_odoo.menu_onlyoffice_pdf
+msgid "PDF Forms"
+msgstr "PDF-Formulare"
+
+#. module: onlyoffice_odoo
+#. odoo-python
+#: code:addons/onlyoffice_odoo/models/onlyoffice_file.py:0
+msgid "Please enter a file name."
+msgstr "Bitte geben Sie einen Dateinamen ein."
+
+#. module: onlyoffice_odoo
+#. odoo-python
+#: code:addons/onlyoffice_odoo/wizard/onlyoffice_file_create.py:0
+msgid "Please select a file to upload."
+msgstr "Bitte wählen Sie eine Datei zum Hochladen aus."
+
+#. module: onlyoffice_odoo
+#: model:ir.actions.act_window,name:onlyoffice_odoo.onlyoffice_file_action_slide
+#: model:ir.ui.menu,name:onlyoffice_odoo.menu_onlyoffice_slide
+msgid "Presentations"
+msgstr "Präsentationen"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_kanban
+msgid "Rename"
+msgstr "Umbenennen"
+
+#. module: onlyoffice_odoo
+#: model:ir.actions.act_window,name:onlyoffice_odoo.onlyoffice_file_action_cell
+#: model:ir.ui.menu,name:onlyoffice_odoo.menu_onlyoffice_cell
+msgid "Spreadsheets"
+msgstr "Tabellen"
+
+#. module: onlyoffice_odoo
+#. odoo-python
+#: code:addons/onlyoffice_odoo/wizard/onlyoffice_file_create.py:0
+msgid "The file %(name)s cannot be stored here. Allowed formats: %(formats)s"
+msgstr "Die Datei %(name)s kann hier nicht abgelegt werden. Erlaubte Formate: %(formats)s"
+
+#. module: onlyoffice_odoo
+#. odoo-python
+#: code:addons/onlyoffice_odoo/models/onlyoffice_file.py:0
+msgid "The file %(name)s does not match this app."
+msgstr "Die Datei %(name)s passt nicht zu dieser App."
+
+#. module: onlyoffice_odoo
+#. odoo-python
+#: code:addons/onlyoffice_odoo/models/onlyoffice_file.py:0
+msgid "Unknown document type: %(type)s"
+msgstr "Unbekannter Dokumenttyp: %(type)s"
+
+#. module: onlyoffice_odoo
+#: model:ir.model.fields.selection,name:onlyoffice_odoo.selection__onlyoffice_file_create__mode__upload
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_kanban
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_view_list
+msgid "Upload"
+msgstr "Hochladen"
+
+#. module: onlyoffice_odoo
+#. odoo-python
+#: code:addons/onlyoffice_odoo/models/onlyoffice_file.py:0
+msgid "Upload File"
+msgstr "Datei hochladen"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_create_view_form
+msgid "Upload and Open"
+msgstr "Hochladen und öffnen"
+
+#. module: onlyoffice_odoo
+#: model_terms:ir.ui.view,arch_db:onlyoffice_odoo.onlyoffice_file_create_view_form
+msgid "e.g. Quarterly report"
+msgstr "z. B. Quartalsbericht"

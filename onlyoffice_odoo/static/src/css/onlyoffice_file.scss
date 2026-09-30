@@ -1,0 +1,29 @@
+// Copyright (C) 2026 Ascensio System SIA
+
+.o_onlyoffice_file_kanban .o_onlyoffice_file_icon {
+  flex-shrink: 0;
+  height: 48px;
+  width: 48px;
+}
+
+.o-onlyoffice-documents .o_content {
+  overflow: hidden;
+}
+
+// ONLYOFFICE Docs Community ignores customization.logo.url, so the logo (which has
+// to stay visible) is covered with a transparent layer that swallows its link.
+.o-onlyoffice-logo-guard {
+  height: 28px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 104px;
+  z-index: 1;
+}
+
+.o-onlyoffice-navbar .o-onlyoffice-title {
+  left: 50%;
+  max-width: 40%;
+  position: absolute;
+  transform: translateX(-50%);
+}

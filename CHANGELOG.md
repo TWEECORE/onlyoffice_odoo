@@ -3,6 +3,7 @@
 ## Added
 
 - compatible with Odoo 20
+- app tiles for text documents, spreadsheets, presentations and PDF forms, each with its own file storage
 
 ## 6.4.0
 

@@ -16,6 +16,8 @@
         "security/ir.access.csv",
         "views/templates.xml",
         "views/res_config_settings_views.xml",
+        "views/onlyoffice_file_views.xml",
+        "wizard/onlyoffice_file_create_views.xml",
     ],
     "images": [
         "static/description/main_screenshot.png",

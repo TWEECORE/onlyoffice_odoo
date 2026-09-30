@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (C) 2026 Ascensio System SIA -->
+<odoo>
+  <record id="onlyoffice_file_create_view_form" model="ir.ui.view">
+    <field name="name">onlyoffice.file.create.view.form</field>
+    <field name="model">onlyoffice.file.create</field>
+    <field name="arch" type="xml">
+      <form>
+        <field name="mode" invisible="1" />
+        <field name="document_type" invisible="1" />
+        <field name="filename" invisible="1" />
+        <group>
+          <field
+            name="name"
+            string="File Name"
+            placeholder="e.g. Quarterly report"
+            invisible="mode != 'new'"
+            required="mode == 'new'"
+          />
+          <field
+            name="file"
+            string="File"
+            filename="filename"
+            invisible="mode != 'upload'"
+            required="mode == 'upload'"
+          />
+          <field name="allowed_formats" string="Allowed Formats" invisible="mode != 'upload'" />
+        </group>
+        <footer>
+          <button
+            name="action_create"
+            string="Create and Open"
+            type="object"
+            class="btn-primary"
+            invisible="mode != 'new'"
+          />
+          <button
+            name="action_create"
+            string="Upload and Open"
+            type="object"
+            class="btn-primary"
+            invisible="mode != 'upload'"
+          />
+          <button string="Cancel" special="cancel" />
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>

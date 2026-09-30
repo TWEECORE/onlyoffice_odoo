@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (C) 2026 Ascensio System SIA -->
+<odoo>
+  <record id="onlyoffice_file_view_kanban" model="ir.ui.view">
+    <field name="name">onlyoffice.file.view.kanban</field>
+    <field name="model">onlyoffice.file</field>
+    <field name="arch" type="xml">
+      <kanban create="0" action="action_open_editor" type="object" class="o_onlyoffice_file_kanban">
+        <header>
+          <button name="action_create_file" string="New" type="object" display="always" class="btn-primary" />
+          <button name="action_upload_file" string="Upload" type="object" display="always" />
+        </header>
+        <field name="document_type" />
+        <templates>
+          <t t-name="menu">
+            <a role="menuitem" type="open" class="dropdown-item">Rename</a>
+            <a role="menuitem" type="object" name="action_download" class="dropdown-item">Download</a>
+            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+          </t>
+          <t t-name="card" class="flex-row align-items-center">
+            <img
+              t-attf-src="/onlyoffice_odoo/static/description/apps/{{ record.document_type.raw_value }}.svg"
+              class="o_onlyoffice_file_icon me-3"
+              t-att-alt="record.document_type.value"
+            />
+            <div class="d-flex flex-column flex-grow-1 min-w-0">
+              <field name="name" class="fw-bold text-truncate" />
+              <div class="d-flex align-items-center gap-2 text-muted small">
+                <field name="extension" class="fw-semibold" />
+                <field name="last_edit_date" widget="date" />
+                <field name="user_id" widget="many2one_avatar_user" class="ms-auto" />
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="onlyoffice_file_view_list" model="ir.ui.view">
+    <field name="name">onlyoffice.file.view.list</field>
+    <field name="model">onlyoffice.file</field>
+    <field name="arch" type="xml">
+      <list create="0">
+        <header>
+          <button name="action_create_file" string="New" type="object" display="always" class="btn-primary" />
+          <button name="action_upload_file" string="Upload" type="object" display="always" />
+        </header>
+        <field name="name" />
+        <field name="extension" optional="show" />
+        <field name="user_id" widget="many2one_avatar_user" optional="show" />
+        <field name="last_edit_uid" widget="many2one_avatar_user" optional="show" />
+        <field name="last_edit_date" optional="show" />
+        <field name="create_date" optional="hide" />
+        <button name="action_open_editor" string="Open" type="object" icon="fa-pencil" />
+      </list>
+    </field>
+  </record>
+
+  <record id="onlyoffice_file_view_form" model="ir.ui.view">
+    <field name="name">onlyoffice.file.view.form</field>
+    <field name="model">onlyoffice.file</field>
+    <field name="arch" type="xml">
+      <form create="0">
+        <header>
+          <button name="action_open_editor" string="Open" type="object" class="btn-primary" />
+          <button name="action_download" string="Download" type="object" />
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <label for="name" />
+            <h1>
+              <field name="name" />
+            </h1>
+          </div>
+          <group>
+            <group>
+              <field name="document_type" readonly="1" />
+              <field name="extension" />
+              <field name="user_id" widget="many2one_avatar_user" />
+            </group>
+            <group>
+              <field name="last_edit_date" />
+              <field name="last_edit_uid" widget="many2one_avatar_user" />
+              <field name="create_date" />
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="onlyoffice_file_view_search" model="ir.ui.view">
+    <field name="name">onlyoffice.file.view.search</field>
+    <field name="model">onlyoffice.file</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name" />
+        <field name="user_id" />
+        <filter name="my_files" string="My Files" domain="[('user_id', '=', uid)]" />
+        <separator />
+        <filter name="last_edit_date" string="Last Edited" date="last_edit_date" />
+        <group>
+          <filter name="group_by_user_id" string="Owner" context="{'group_by': 'user_id'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="onlyoffice_file_action_word" model="ir.actions.act_window">
+    <field name="name">Text</field>
+    <field name="res_model">onlyoffice.file</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="domain">[('document_type', '=', 'word')]</field>
+    <field name="context">{'default_document_type': 'word'}</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Create your first document</p>
+      <p>Click "New" to start with an empty document or "Upload" to add an existing one.</p>
+    </field>
+  </record>
+
+  <record id="onlyoffice_file_action_cell" model="ir.actions.act_window">
+    <field name="name">Spreadsheets</field>
+    <field name="res_model">onlyoffice.file</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="domain">[('document_type', '=', 'cell')]</field>
+    <field name="context">{'default_document_type': 'cell'}</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Create your first spreadsheet</p>
+      <p>Click "New" to start with an empty spreadsheet or "Upload" to add an existing one.</p>
+    </field>
+  </record>
+
+  <record id="onlyoffice_file_action_slide" model="ir.actions.act_window">
+    <field name="name">Presentations</field>
+    <field name="res_model">onlyoffice.file</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="domain">[('document_type', '=', 'slide')]</field>
+    <field name="context">{'default_document_type': 'slide'}</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Create your first presentation</p>
+      <p>Click "New" to start with an empty presentation or "Upload" to add an existing one.</p>
+    </field>
+  </record>
+
+  <record id="onlyoffice_file_action_pdf" model="ir.actions.act_window">
+    <field name="name">PDF Forms</field>
+    <field name="res_model">onlyoffice.file</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="domain">[('document_type', '=', 'pdf')]</field>
+    <field name="context">{'default_document_type': 'pdf'}</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Create your first PDF form</p>
+      <p>Click "New" to start with an empty PDF form or "Upload" to add an existing PDF.</p>
+    </field>
+  </record>
+
+  <menuitem
+    id="menu_onlyoffice_word"
+    name="Text"
+    action="onlyoffice_file_action_word"
+    web_icon="onlyoffice_odoo,static/description/apps/word.svg"
+    groups="base.group_user"
+    sequence="40"
+  />
+  <menuitem
+    id="menu_onlyoffice_cell"
+    name="Spreadsheets"
+    action="onlyoffice_file_action_cell"
+    web_icon="onlyoffice_odoo,static/description/apps/cell.svg"
+    groups="base.group_user"
+    sequence="41"
+  />
+  <menuitem
+    id="menu_onlyoffice_slide"
+    name="Presentations"
+    action="onlyoffice_file_action_slide"
+    web_icon="onlyoffice_odoo,static/description/apps/slide.svg"
+    groups="base.group_user"
+    sequence="42"
+  />
+  <menuitem
+    id="menu_onlyoffice_pdf"
+    name="PDF Forms"
+    action="onlyoffice_file_action_pdf"
+    web_icon="onlyoffice_odoo,static/description/apps/pdf.svg"
+    groups="base.group_user"
+    sequence="43"
+  />
+</odoo>

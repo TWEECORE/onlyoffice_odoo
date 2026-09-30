@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- Copyright (C) 2026 Ascensio System SIA -->
 <templates xml:space="preserve">
-    <t t-name="onlyoffice_odoo.Editor" owl="1">
-    <html>
-      <head>
-        <meta charset="UTF-8" />
-        <title> ONLYOFFICE </title>
-        <style>
-          html, body {
-            height: 100%;
-          }
-        </style>
-      </head>
-      <body class="o-onlyoffice-documents">
-        <div id="doceditor" />
-        <div id="error" class="w-25 m-auto my-5 py-5 d-flex flex-column d-none">
-          <img src="/onlyoffice_odoo/static/svg/onlyoffice_logo.svg" alt="ONLYOFFICE logo" />
-          <div class="my-3 alert alert-danger">
-            <p> ONLYOFFICE cannot be reached. Please contact admin. </p>
+  <t t-name="onlyoffice_odoo.Editor">
+    <div class="o_action o-onlyoffice-documents">
+      <!-- Like the spreadsheet editor, the navigation lives in the navbar instead of a control panel. -->
+      <t t-custom-portal="'.o_navbar_breadcrumbs'">
+        <div class="o-onlyoffice-navbar d-flex align-items-center flex-fill min-w-0">
+          <!-- on desktop the app name in the navbar already acts as back button -->
+          <button
+            t-if="this.previousBreadcrumb"
+            class="o-onlyoffice-back o_back_button btn btn-link d-md-none px-2"
+            t-att-data-tooltip="this.backTooltip"
+            t-att-aria-label="this.backTooltip"
+            data-hotkey="b"
+            t-on-click.prevent="this.onBackClick"
+          >
+            <i class="oi oi-fw" data-icon="west" />
+          </button>
+          <span class="o-onlyoffice-title text-truncate" t-out="this.state.title" />
+        </div>
+      </t>
+      <Layout display="{}">
+        <div class="o-onlyoffice-editor position-relative h-100">
+          <div id="doceditor" />
+          <div class="o-onlyoffice-logo-guard" aria-hidden="true" />
+          <div id="error" class="w-25 m-auto my-5 py-5 d-flex flex-column d-none">
+            <img src="/onlyoffice_odoo/static/svg/onlyoffice_logo.svg" alt="ONLYOFFICE logo" />
+            <div class="my-3 alert alert-danger">
+              <p> ONLYOFFICE cannot be reached. Please contact admin. </p>
+            </div>
           </div>
         </div>
-      </body>
-    </html>
+      </Layout>
+    </div>
   </t>
 </templates>

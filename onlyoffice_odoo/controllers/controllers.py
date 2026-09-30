@@ -251,6 +251,10 @@ class Onlyoffice_Connector(http.Controller):
                 else:
                     attachment.write({"raw": datas, "mimetype": guess_type(file_url)[0]})
 
+                request.env["onlyoffice.file"].sudo().search([("attachment_id", "=", attachment.id)]).write(
+                    {"last_edit_date": fields.Datetime.now(), "last_edit_uid": user.id}
+                )
+
                 _logger.info("POST /onlyoffice/editor/callback/%s - file saved successfully", attachment_id)
 
         except Exception as ex:
@@ -306,7 +310,11 @@ class Onlyoffice_Connector(http.Controller):
             "editorConfig": {
                 "lang": request.env.user.lang,
                 "user": {"id": str(request.env.user.id), "name": request.env.user.name},
-                "customization": {},
+                "customization": {
+                    # keep the ONLYOFFICE logo, but do not link it to onlyoffice.com (Docs Developer only,
+                    # the Community Edition ignores it, see .o-onlyoffice-logo-guard)
+                    "logo": {"url": ""},
+                },
             },
         }
 
@@ -492,7 +500,11 @@ class Onlyoffice_Connector(http.Controller):
                 "mode": "view",
                 "lang": request.env.user.lang,
                 "user": {"id": str(request.env.user.id), "name": request.env.user.name},
-                "customization": {},
+                "customization": {
+                    # keep the ONLYOFFICE logo, but do not link it to onlyoffice.com (Docs Developer only,
+                    # the Community Edition ignores it, see .o-onlyoffice-logo-guard)
+                    "logo": {"url": ""},
+                },
             },
         }
 
