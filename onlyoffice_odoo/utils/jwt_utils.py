@@ -11,14 +11,18 @@ def is_jwt_enabled(env):
     return bool(config_utils.get_jwt_secret(env))
 
 
-def encode_payload(env, payload, secret=None):
+def encode_payload(env, payload, secret=None, operation=None):
+    """Sign a payload; ``operation`` ("command", "converter", "docbuilder") restricts the token
+    to that service of ONLYOFFICE Docs 10+, which checks it (services.CoAuthoring.token.purposeCheck).
+    """
     if secret is None:
         secret = config_utils.get_jwt_secret(env)
     now = datetime.datetime.now(datetime.timezone.utc)
     exp = now + datetime.timedelta(hours=24)
     payload["iat"] = int(now.timestamp())
     payload["exp"] = int(exp.timestamp())
-    return jwt.encode(payload, secret, algorithm="HS256")
+    claims = {**payload, "operation": operation} if operation else payload
+    return jwt.encode(claims, secret, algorithm="HS256")
 
 
 def decode_token(env, token, secret=None):

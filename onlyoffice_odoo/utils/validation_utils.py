@@ -79,10 +79,10 @@ def check_doc_serv_command_service(env, url, jwt_secret, jwt_header, disable_cer
         if jwt_secret is not None and jwt_secret is not False and jwt_secret != "":
             payload = {"payload": body_json}
 
-            header_token = jwt_utils.encode_payload(env, payload, jwt_secret)
+            header_token = jwt_utils.encode_payload(env, payload, jwt_secret, operation="command")
             headers[jwt_header] = "Bearer " + header_token
 
-            token = jwt_utils.encode_payload(env, body_json, jwt_secret)
+            token = jwt_utils.encode_payload(env, body_json, jwt_secret, operation="command")
             body_json["token"] = token
 
         response = requests.post(
@@ -135,9 +135,9 @@ def convert(env, file_url, url, jwt_secret, jwt_header, disable_certificate):
 
     if bool(jwt_secret):
         payload = {"payload": body_json}
-        header_token = jwt_utils.encode_payload(env, payload, jwt_secret)
+        header_token = jwt_utils.encode_payload(env, payload, jwt_secret, operation="converter")
         headers[jwt_header] = "Bearer " + header_token
-        token = jwt_utils.encode_payload(env, body_json, jwt_secret)
+        token = jwt_utils.encode_payload(env, body_json, jwt_secret, operation="converter")
         body_json["token"] = token
 
     try:

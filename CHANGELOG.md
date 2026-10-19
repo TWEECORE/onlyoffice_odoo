@@ -4,6 +4,8 @@
 
 - compatible with Odoo 20
 - app tiles for text documents, spreadsheets, presentations and PDF forms, each with its own file storage
+- compatible with ONLYOFFICE Docs 10: tokens of the command, conversion and Document Builder requests name their
+  operation (`operation` field), formats from document-formats (ofd, xls editable with loss, docxf/oform removed)
 
 ## 6.4.0
 

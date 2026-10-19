@@ -231,7 +231,7 @@ class OnlyOfficeTemplate(models.Model):
 
         if bool(jwt_secret):
             payload = {"payload": payload}
-            token = jwt_utils.encode_payload(self.env, payload, jwt_secret)
+            token = jwt_utils.encode_payload(self.env, payload, jwt_secret, operation="converter")
             headers[jwt_header] = "Bearer " + token
             payload["token"] = token
 

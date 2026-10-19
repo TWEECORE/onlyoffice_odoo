@@ -239,9 +239,11 @@ class IrActionsReport(models.Model):
         _logger.info("fill_template - jwt_enabled: %s", bool(jwt_secret))
 
         if jwt_secret:
-            docbuilder_payload["token"] = jwt_utils.encode_payload(self.env, docbuilder_payload, jwt_secret)
+            docbuilder_payload["token"] = jwt_utils.encode_payload(
+                self.env, docbuilder_payload, jwt_secret, operation="docbuilder"
+            )
             docbuilder_headers[jwt_header] = "Bearer " + jwt_utils.encode_payload(
-                self.env, {"payload": docbuilder_payload}, jwt_secret
+                self.env, {"payload": docbuilder_payload}, jwt_secret, operation="docbuilder"
             )
 
         try:
